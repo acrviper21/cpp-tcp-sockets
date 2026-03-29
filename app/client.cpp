@@ -22,13 +22,20 @@ int main()
         boost::asio::connect(socket, results);
 
         std::string client_message = "Hello from client!";
+        int client_message_size = client_message.size();
         boost::system::error_code error_code;
+
+        boost::asio::write(socket, boost::asio::buffer(&client_message_size, sizeof(client_message_size)), error_code);
         boost::asio::write(socket, boost::asio::buffer(client_message), error_code);
 
-        std::vector<char> server_message(1024);
-        size_t reply_length = boost::asio::read(socket, boost::asio::buffer(server_message), error_code);
+        std::vector<char> receive_buffer(1024);
+        int server_message_size;
+        boost::asio::read(socket, boost::asio::buffer(&server_message_size, sizeof(server_message_size)), error_code);
+        std::cout << "Message Size: " << server_message_size << std::endl;
+        receive_buffer.resize(server_message_size);
+        size_t reply_length = boost::asio::read(socket, boost::asio::buffer(receive_buffer), error_code);
 
-        std::cout.write(server_message.data(), reply_length) << std::endl;
+        std::cout.write(receive_buffer.data(), reply_length) << std::endl;
     }
     catch(const std::exception& e)
     {
