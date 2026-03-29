@@ -31,7 +31,7 @@ int main()
         std::vector<char> receive_buffer(1024);
         int server_message_size;
         boost::asio::read(socket, boost::asio::buffer(&server_message_size, sizeof(server_message_size)), error_code);
-        std::cout << "Message Size: " << server_message_size << std::endl;
+   
         receive_buffer.resize(server_message_size);
         size_t reply_length = boost::asio::read(socket, boost::asio::buffer(receive_buffer), error_code);
 
