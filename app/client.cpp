@@ -31,17 +31,11 @@ int main()
         std::vector<char> receive_buffer(1024);
         int server_message_size;
         boost::asio::read(socket, boost::asio::buffer(&server_message_size, sizeof(server_message_size)), error_code);
-<<<<<<< HEAD
+
 
         receive_buffer.resize(server_message_size);
         size_t reply_length = boost::asio::read(socket, boost::asio::buffer(receive_buffer), error_code);
-
-=======
-   
-        receive_buffer.resize(server_message_size);
-        size_t reply_length = boost::asio::read(socket, boost::asio::buffer(receive_buffer), error_code);
-
->>>>>>> client-logic
+        
         std::cout.write(receive_buffer.data(), reply_length) << std::endl;
     }
     catch(const std::exception& e)
